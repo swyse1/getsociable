@@ -1,0 +1,11 @@
+{
+  "name": "getsociable-design-console",
+  "private": true,
+  "description": "GetSociable design prototype and design system. No build step; these scripts only run the checks.",
+  "scripts": {
+    "check": "node design-eval.js && node tools/build-tokens.js --check && node tests/festival-navigation.js && node tests/map-policy.js",
+    "eval": "node design-eval.js",
+    "tokens": "node tools/build-tokens.js",
+    "audit": "node tools/audit-runtime.js && node tests/library.js"
+  }
+}

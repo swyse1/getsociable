@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "missing": [{ "type": "query", "key": "mode" }],
+      "destination": "/?mode=phone&screen=home&dark=off",
+      "permanent": false
+    }
+  ]
+}
