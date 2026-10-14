@@ -48,7 +48,7 @@
   html{height:100%;overflow:hidden}
   body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--c-bg);color:var(--c-ink);
     height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;font-size:14px}
-  .phone{font-family:'Poppins',sans-serif}
+  .phone{font-family:var(--font-sans)}
   /* No phone-scoped focus ring existed anywhere before this — every tapzone/
      role=button in the mobile prototype was keyboard-focusable (tabindex="0")
      but invisibly so, across every screen, not just the ones built here.
@@ -649,17 +649,21 @@
     --free:#1e7b64;      /* Positive: the Free price tag and "tickets available". Same hue as --accent. */
     --accent:#1e7b64;    /* Yours: the added tick, "In your plan", text links, selected guide interval. */
     --warn:#a8541c;      /* Caution about a listing: scarcity ("Last few"), "Sale not started". */
-    /* Text/icons sitting ON a solid accent, free or danger fill. Stays white
-       in both themes — it is contrast against the fill, not against the page,
-       so it must NOT be swapped for --bg. */
+    /* Text and icons ON a solid accent, free or danger fill: white in light, dark in dark
+       (those fills are light there). Contrast is against the fill, never swap it for --bg. */
     --on-solid:#ffffff;
     /* Tints — soft fill + -ink text/glyph, each pair 4.5:1. Pink, purple, orange and amber are
        CATEGORY colours (one map: CAT_TINT); blue is the "On now" status only. */
-    --tint-pink:#fde8ec;   --tint-pink-ink:#c2185b;
-    --tint-purple:#eee9fd; --tint-purple-ink:#6340c4;
-    --tint-orange:#ffe9e0; --tint-orange-ink:#b83d0b;
-    --tint-blue:#e4eefd;   --tint-blue-ink:#1d5fbf;
-    --tint-amber:#fdf0d5;  --tint-amber-ink:#925d05;
+    --tint-pink:#fde8ec;        /* Category fill: Arts & Culture, Theatre, Visual Arts, Festivals */
+    --tint-pink-ink:#c2185b;    /* Text and icons on --tint-pink */
+    --tint-purple:#eee9fd;      /* Category fill: Live Music, Club Nights, Comedy, Dating, Groups */
+    --tint-purple-ink:#6340c4;  /* Text and icons on --tint-purple */
+    --tint-orange:#ffe9e0;      /* Category fill: Food & Drink, Pub Quizzes, Street Performance, Venues */
+    --tint-orange-ink:#b83d0b;  /* Text and icons on --tint-orange */
+    --tint-blue:#e4eefd;        /* "On now" only, never a category */
+    --tint-blue-ink:#1d5fbf;    /* Text and icons on --tint-blue */
+    --tint-amber:#fdf0d5;       /* Category fill: Activities & Tours, Live Sport, Deals; caution fill (Overlap) */
+    --tint-amber-ink:#925d05;   /* Text and icons on --tint-amber; the Overlap line */
     --danger:#c23b57;    /* Negative / destructive: sold out, cancelled, delete, leave. Nothing else is red. */
 
     /* =====================================================================
@@ -685,13 +689,52 @@
     --fs-page-title:22px;    /* page header (.brand-head / brandHeader) */
     --fs-display-sm:28px;    /* onboarding / hero headline */
     --fs-display:40px;       /* splash only */
+    --font-sans:'Poppins', sans-serif; /* the one typeface; weights 400 to 800 are loaded */
     /* Only these five weights are loaded; anything else is browser-faked. */
-    --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-extrabold:800;
-    --lh-none:1; --lh-tight:1.25; --lh-snug:1.35; --lh-normal:1.45; --lh-relaxed:1.55;
+    --fw-regular:400;        /* rarely: long reading text */
+    --fw-medium:500;         /* body text, meta lines */
+    --fw-semibold:600;       /* labels, buttons, chips, tabs */
+    --fw-bold:700;           /* titles and headings */
+    --fw-extrabold:800;      /* display / splash only */
+    --lh-none:1;             /* one-line marks: chips, tags, padded labels */
+    --lh-tight:1.25;         /* titles and buttons */
+    --lh-snug:1.35;          /* meta lines and captions */
+    --lh-normal:1.45;        /* body text */
+    --lh-relaxed:1.55;       /* long descriptions */
+    /* Letter-spacing: only titles and display sizes are tightened. */
+    --ls-page-title:-0.3px;  /* page header title */
+    --ls-display-sm:-0.4px;  /* onboarding / hero headline */
+    --ls-display:-0.6px;     /* splash */
+    /* Text styles = size + weight + line height in one CSS font shorthand:
+       font: var(--type-body). Pick the role, never mix the parts by hand. */
+    --type-caption:var(--fw-medium) var(--fs-caption)/var(--lh-snug) var(--font-sans);           /* meta, timestamps, tab labels */
+    --type-label:var(--fw-semibold) var(--fs-label)/var(--lh-none) var(--font-sans);             /* chips, category tags */
+    --type-small:var(--fw-semibold) var(--fs-small)/var(--lh-tight) var(--font-sans);            /* segmented control, secondary actions */
+    --type-body:var(--fw-medium) var(--fs-body)/var(--lh-normal) var(--font-sans);               /* descriptions, form text */
+    --type-body-strong:var(--fw-semibold) var(--fs-body-strong)/var(--lh-tight) var(--font-sans); /* buttons, sheet rows */
+    --type-card-title:var(--fw-bold) var(--fs-card-title)/var(--lh-tight) var(--font-sans);      /* list-row titles */
+    --type-lead:var(--fw-medium) var(--fs-lead)/var(--lh-normal) var(--font-sans);               /* empty states, emphasised body */
+    --type-row-title-lg:var(--fw-bold) var(--fs-row-title-lg)/var(--lh-tight) var(--font-sans);  /* large list-row titles (My Plans) */
+    --type-sheet-title:var(--fw-bold) var(--fs-sheet-title)/var(--lh-tight) var(--font-sans);    /* bottom-sheet title */
+    --type-screen-title:var(--fw-bold) var(--fs-screen-title)/var(--lh-tight) var(--font-sans);  /* compact header title */
+    --type-page-title:var(--fw-bold) var(--fs-page-title)/var(--lh-tight) var(--font-sans);      /* page header title; letter-spacing --ls-page-title */
+    --type-display-sm:var(--fw-bold) var(--fs-display-sm)/var(--lh-tight) var(--font-sans);      /* hero headline; letter-spacing --ls-display-sm */
+    --type-display:var(--fw-extrabold) var(--fs-display)/var(--lh-none) var(--font-sans);        /* splash; letter-spacing --ls-display */
     /* Spacing — 2px grid, named by pixel value. Prefer multiples of 4. */
-    --space-0:0px;   --space-2:2px;   --space-4:4px;   --space-6:6px;   --space-8:8px;
-    --space-10:10px; --space-12:12px; --space-14:14px; --space-16:16px; --space-20:20px;
-    --space-24:24px; --space-32:32px; --space-40:40px; --space-48:48px;
+    --space-0:0px;           /* reset */
+    --space-2:2px;           /* hairline nudges, title to subtitle */
+    --space-4:4px;           /* tight inner gaps, tag above its line */
+    --space-6:6px;           /* icon to label in chips */
+    --space-8:8px;           /* icon to label in buttons, gap between chips */
+    --space-10:10px;         /* chip row vertical padding */
+    --space-12:12px;         /* row vertical padding, thumbnail to text */
+    --space-14:14px;         /* tile padding, field spacing */
+    --space-16:16px;         /* screen gutter, card padding */
+    --space-20:20px;         /* between sections */
+    --space-24:24px;         /* major section break */
+    --space-32:32px;         /* large empty states, logo to title */
+    --space-40:40px;         /* empty-state top, screen top padding */
+    --space-48:48px;         /* onboarding, logo height on login */
     --gutter:16px;           /* phone left/right edge — constant, every screen */
     /* Radius — role -> size. */
     --radius-xs:4px;         /* price tags, tiny badges */
@@ -713,22 +756,38 @@
     --scrim:rgba(15,15,20,.45);  /* dim layer behind full-screen search */
     --blur-scrim:8px;            /* blur on the page behind full-screen search */
     /* Motion. prefers-reduced-motion is honoured globally further down. */
-    --dur-instant:80ms; --dur-fast:120ms; --dur-base:180ms; --dur-slow:240ms; --dur-sheet:320ms;
+    --dur-instant:80ms;      /* press feedback */
+    --dur-fast:120ms;        /* hover, small colour changes */
+    --dur-base:180ms;        /* state changes: toggle, select, fade */
+    --dur-slow:240ms;        /* larger moves: header hide on scroll */
+    --dur-sheet:320ms;       /* sheets and panels in and out */
     --ease-standard:cubic-bezier(.2,.8,.2,1);  /* default for enter / move */
     --ease-emphasis:cubic-bezier(.22,.61,.36,1); /* sheets and large surfaces */
     /* Icons — the only five sizes that exist. Stroke is always 1.8. */
-    --icon-xs:12px; --icon-sm:14px; --icon-md:16px; --icon-lg:20px; --icon-xl:24px;
+    --icon-xs:12px;          /* inside chips */
+    --icon-sm:14px;          /* inline with meta text */
+    --icon-md:16px;          /* inside text buttons, sheet rows, fields */
+    --icon-lg:20px;          /* standalone icon buttons */
+    --icon-xl:24px;          /* tab bar, header actions */
     /* Listing thumbnail: ONE size for every list row that shows a listing's image
        (Home, Festivals, festival events, search results, saved, plans). 4:3 so photos
        aren't cropped at the head. */
-    --thumb-list-w:120px; --thumb-list-h:90px;
+    --thumb-list-w:120px;    /* listing thumbnail width (4:3) */
+    --thumb-list-h:90px;     /* listing thumbnail height (4:3) */
 
-    --icon-stroke:1.8;
+    --icon-stroke:1.8;       /* outline icon stroke width, constant */
     /* Accessibility floor. */
     --tap-min:44px;          /* every interactive target, both axes */
     --font-min:11px;         /* nothing readable is smaller */
     /* Stacking — use these, never a bare z-index number. */
-    --z-raised:1; --z-sticky:10; --z-fab:20; --z-tabbar:25; --z-scrim:49; --z-sheet:50; --z-toast:70; --z-modal:80;
+    --z-raised:1;            /* overlapping avatars, badges on thumbnails */
+    --z-sticky:10;           /* sticky section headers */
+    --z-fab:20;              /* floating action button */
+    --z-tabbar:25;           /* tab bar */
+    --z-scrim:49;            /* dim layer under a sheet */
+    --z-sheet:50;            /* bottom sheets */
+    --z-toast:70;            /* toasts */
+    --z-modal:80;            /* full-screen overlays and dialogs */
 
     width:413px;height:872px;background:var(--bg);color:var(--ink);
     /* iPhone 14 Pro: 393 x 852 screen inside the 10px bezel. Shorter windows scale the
@@ -1549,7 +1608,7 @@
   .phone .fest-plan-actions .plan-pill{flex:none}
   .phone .fest-plan-actions .plan-pill.primary{flex:1}
   .cbtn{margin:20px 16px 0;background:var(--surface-2);color:var(--ink-2);
-    border-radius:24px;padding:13px;font-size:13px;font-weight:600;text-align:center;
+    border-radius:var(--radius-pill);padding:13px;font-size:var(--fs-body-strong);font-weight:var(--fw-semibold);text-align:center;
     cursor:pointer}
   .cbtn.active{background:var(--ink);color:var(--bg)}
   /* Same button, sized to its label (empty states): same height, wider sides. */
@@ -1721,7 +1780,7 @@
   .scrim{position:absolute;inset:0;background:rgba(15,15,20,.5);z-index:49}
   .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg);
     border-radius:var(--radius-sheet) var(--radius-sheet) 0 0;z-index:var(--z-sheet);padding:var(--space-16) var(--space-16) var(--space-20);max-height:86%;
-    overflow-y:auto;scrollbar-width:none}
+    overflow-y:auto;scrollbar-width:none;box-shadow:var(--shadow-3)}
   .sheet::-webkit-scrollbar{display:none}
   .grab{width:36px;height:4px;border-radius:2px;background:var(--surface-2);margin:0 auto 13px}
   .sheet h3{font-size:16px;font-weight:700;margin-bottom:3px}
@@ -3274,6 +3333,293 @@
 </style>
 </head>
 <body>
+<!-- DESIGN.md: template and component tokens. Read by designMd() in the console and by tools/build-tokens.js. -->
+<script type="text/markdown" id="design-md-template">
+{{frontmatter}}
+
+<!-- GENERATED from index.html by tools/build-tokens.js. Do not edit this file:
+     change the tokens (.phone{} in index.html) or the DESIGN.md template in
+     index.html, then run `node tools/build-tokens.js`. -->
+
+# GetSociable design system
+
+The design system of the GetSociable consumer app, in one file, for the people and the AI
+agents who build it. The YAML block above holds the design tokens (they are normative); the
+sections below say how to use them. The format is [DESIGN.md](https://github.com/google-labs-code/design.md)
+(Google Labs), so tools that read DESIGN.md can lint it and export it to Tailwind or W3C tokens.
+
+| You need | Where |
+| --- | --- |
+| Every token, both themes, W3C DTCG format | [`design-system/tokens.json`](design-system/tokens.json) |
+| The same tokens as CSS, SCSS, Tailwind, SwiftUI, Android | Prototype → Tools → Library → Developer handoff |
+| Every component in every state, measured against the screens | Prototype → Tools → Library → Components |
+| Every screen and state, light and dark | Prototype → Screens |
+| The rules for contributors and AI agents | [`AGENTS.md`](AGENTS.md) |
+| Step-by-step jobs (convert a screen, add / change / remove a component) | [`design-system/work-instructions.md`](design-system/work-instructions.md) |
+
+## Overview
+
+GetSociable helps people aged 18 to 25 in UK and Irish cities find what's on tonight and plan a
+night out together. Two jobs, two halves of the app: **Listings** (discover: live
+entertainment, eat & drink, experiences, festivals, deals) and **Plans** (organise a group:
+dates, people, what's in, travel, stay).
+
+The interface is **calm and neutral so the listings carry the colour**: near-black ink on
+white (or the reverse in dark mode), real photos, and one green accent that means "free" or
+"yours". Colour is functional, never decoration. The layout is a single column of full-width
+rows on a phone; nothing is a carousel.
+
+- **Mobile first.** Designed on a 393 × 852 phone (iPhone 14 Pro). Every screen has a light
+  and a dark theme.
+- **Tokens, not values.** Every colour, size, weight, radius, shadow, duration and layer in a
+  component is a token. If no token fits, the system grows (a new token, documented), never
+  a one-off number.
+- **One component per job.** A chip that is "almost" the selection chip is the most common
+  way an app drifts. Reuse the component; change it in one place.
+- **Accessible by default.** WCAG 2.2 AA in both themes: 44 × 44 targets, 4.5:1 text, nothing
+  under 11px, every control named.
+
+**Source of truth.** The tokens live as CSS custom properties in the `.phone{}` (light) and
+`.phone.dark{}` (dark) blocks of [`index.html`](index.html). This file, `tokens.json` and the
+prototype's Library are generated from that block, so they cannot disagree.
+
+## Colors
+
+Each colour has **one job**. Pick by role, never by look. Every pair below meets 4.5:1 for
+text in its theme; the prototype's Library re-checks every pairing live.
+
+{{colors}}
+
+**Category tints** pair a soft fill with an `-ink` colour for text and icons on it (4.5:1).
+They mark a listing's category in tags, tiles and the calendar. Use `catTint(category)`;
+never pick a tint by hand.
+
+{{tints}}
+
+- `--accent` and `--free` are the same green on purpose: green means free, available or
+  yours. Labels tell them apart.
+- `--on-solid` is the text on a solid accent, free or danger fill. It is white in light and
+  goes dark in dark mode (the fills get lighter). Never use `--bg` for it.
+- Blue (`--tint-blue`) means "on now" only. Red (`--danger`) means sold out, cancelled or
+  destructive only. Amber means caution (overlap), never an error.
+- The mint `#77c8b1` is for dark mode only: it is 1.97:1 on white.
+
+## Typography
+
+One typeface, **Poppins**, weights 400, 500, 600, 700 and 800 only (anything else is faked by
+the browser). Use a **text style** (`font: var(--type-body)`, `text-body` in Tailwind,
+`GSText.body` in SwiftUI, `GS.Text.Body` on Android). It sets size, weight, line height and
+letter-spacing together. Don't assemble them by hand.
+
+{{type}}
+
+- Titles 700, labels and buttons 600, body 500.
+- Sentence case everywhere ("Add to plan", not "Add To Plan"). The wordmark is the logo
+  image, never typed.
+- Nothing readable under 11px (`--font-min`). One line titles truncate with an ellipsis;
+  two-line titles clamp at two.
+
+Load the font:
+
+```html
+{{fontlink}}
+```
+
+## Layout
+
+- **Frame:** a 393-wide phone screen. Content sits on a **16px gutter** (`--gutter`) on both
+  sides, on every screen.
+- **Spacing scale** (2px grid, prefer multiples of 4). Rows are 12 vertical / 16 horizontal;
+  icon to label 6 to 8; between sections 20 to 24.
+
+{{space}}
+
+- **Screen anatomy:** header (page title, or compact title row with back) → controls (chips,
+  segmented control) → one scrolling list of full-width rows → tab bar (Home, Search, Hub,
+  Notifications, Account). Sheets slide over from the bottom.
+- **Listing row** (the most used layout): 120 × 90 photo (4:3, `--thumb-list-w` ×
+  `--thumb-list-h`, `--radius-md`), then four lines: when · title (2 lines max) · venue ·
+  status (price, tag), and one + button on the right.
+- **Touch:** every interactive element is at least 44 × 44 (`--tap-min`), even when the
+  visible control is smaller (`.tap-expand` adds an invisible 44 × 44 hit area).
+
+## Elevation & Depth
+
+The interface is **flat**. Hairline borders (`--hair`) and fills (`--surface`, `--surface-2`)
+separate things. Shadows are only for things that float over content, and there are exactly
+four levels. Dark mode uses the same tokens with heavier shadow alpha.
+
+{{shadow}}
+
+**Stacking order.** Use these, never a bare `z-index` number:
+
+{{z}}
+
+**Scrim.** Full-screen overlays dim and blur the page behind them: `--scrim`
+(rgba(15, 15, 20, .45)) with `backdrop-filter: blur(var(--blur-scrim))`.
+
+## Shapes
+
+Soft, rounded rectangles. Small elements get small radii; pills are for buttons; circles for
+avatars and round icon buttons.
+
+{{radius}}
+
+- Control chips (Date, Sort, Filter) use 11px corners and form fields 11px. Whether they
+  join the scale (12px) is an open decision for Peter; see Decisions.
+
+## Components
+
+Build with these. The tokens in the front matter give each component's key values; the
+prototype's **Library → Components** shows every state, the classes, the accessibility
+contract and copyable markup, and checks each one against every screen.
+
+{{components}}
+
+**States.** Every interactive component has: rest, pressed (scale .97 or `--surface`),
+focused (2px `--accent` ring, 2px offset), disabled (45% and not focusable, plus
+`aria-disabled`), and where it applies selected (`--ink` fill, `--bg` text) and "not ready yet"
+(`--surface-2` fill, `--ink-2` text, still tappable to show what's missing).
+
+Full anatomy, states and rules for all components: [`design-system/components.md`](design-system/components.md).
+
+## Do's and Don'ts
+
+- Do use a token for every colour, size, weight, radius, shadow, duration and z-index.
+- Don't type a hex or a pixel value in a component. If no token fits, add one (with its role)
+  or ask.
+- Do pick colours and text styles by role ("secondary text", "list-row title"), not by look.
+- Don't use `--bg` for text on a solid fill; use `--on-solid`.
+- Do give every tap target 44 × 44, even when the icon is 12px.
+- Don't make icons smaller to fit; when unsure, go one size up.
+- Do reuse the component and change it in its shared rule.
+- Don't fix one screen with an inline `style=`; that is how screens drift apart.
+- Do show every status in words. Colour is never the only signal.
+- Don't use red for anything but sold out, cancelled or destructive, or blue for anything but
+  on now.
+- Do check both themes and long text before calling a screen done.
+- Don't add a carousel or a second listing layout; one row per listing, everywhere.
+
+**Product rules** (agreed with the product owner, safe to build against):
+
+{{rules}}
+
+## Iconography
+
+- One outline set on a 24 × 24 grid, stroke 1.8, round caps and joins. 65 icons: Library →
+  Icons exports them as an SVG sprite, JSON, JSX or files.
+- **Five sizes only:** 24 tab bar and header actions; 20 standalone icon buttons; 16 inside
+  text buttons, sheet rows and fields; 14 inline with meta text; 12 inside chips.
+
+{{icons}}
+
+- **One icon per meaning:** save = bookmark (filled once saved), share = upload (box with an
+  arrow), back = chevron, preferences = sliders. The heart is the Dating category only.
+- Decorative icons get `aria-hidden="true" focusable="false"`; an icon-only control gets an
+  `aria-label` ("Save event", not "bookmark").
+- No emoji as icons in the interface chrome.
+
+## Motion
+
+Short and quiet. Motion confirms an action; it never decorates.
+
+{{motion}}
+
+- Pressed state: scale .97.
+- Honour `prefers-reduced-motion`: durations drop to near zero, nothing slides.
+
+## Accessibility
+
+Target **WCAG 2.2 AA**, in light and dark. Every rule below is checked on every screen and
+state by the prototype's rendered audit (`tools/audit-runtime.js`), which currently reports 0
+findings.
+
+{{a11y}}
+
+Still checked by hand: focus moving into and out of sheets, Escape closing them, and 3:1 for
+icons and control borders. Full rules: [`design-system/accessibility.md`](design-system/accessibility.md).
+
+## Content
+
+Warm, brief, specific: the friend who knows what's on. UK English.
+
+- Sentence case for titles, buttons, tabs and chips.
+- Dates and times: "Sat 10 Oct 19:30" (24-hour, no year in the current year); "Tonight
+  19:30" and "Tomorrow 18:00" within two days; Date chip ranges "10 Oct – 12 Oct"; festival
+  dates "10 to 11 Oct · 2 days".
+- Prices: "£8", "from £22" when prices vary, "Free" (the green chip, never £0).
+- Buttons are verbs that say what happens ("Add to plan", "Show 34 events"), never "OK" or
+  "Submit". A destructive confirmation names the thing ("Leave Friday night?").
+- Toasts: past tense, six words at most, no full stop ("Added to Friday night").
+- Empty states: one sentence on what appears here and one action. No illustrations, no
+  placeholder text.
+- Full guide: [`design-system/content.md`](design-system/content.md).
+
+## Theming & implementation
+
+- **Use the CSS custom properties.** Set the light values on `:root` and the dark values under
+  `[data-theme="dark"]` and `@media (prefers-color-scheme: dark)` (the CSS export does both).
+  Components only reference `var(--…)` tokens, so switching theme swaps values, not rules.
+- **Token file:** `design-system/tokens.json` is W3C DTCG 2025.10. Colours are grouped by theme
+  (`color.light`, `color.dark`, `tint.light`, `tint.dark`); text styles are typography
+  composites that alias the size, weight, line-height and letter-spacing tokens. It loads
+  into Style Dictionary, Terrazzo, Tokens Studio and Figma variables.
+- **Names are the same everywhere:** `--fs-body` in CSS is `font.size.body` in the token file
+  and `text-body` in Tailwind.
+- **Don't edit generated files** (`tokens.json`, this file). Change `index.html`, then run
+  `node tools/build-tokens.js`. `node tools/build-tokens.js --check` fails if they are stale.
+
+## Decisions
+
+Built and agreed decisions are safe to build against (Library → Developer handoff lists
+them). These are **not settled**: build what the prototype shows and flag it.
+
+{{open}}
+
+**Style questions for Peter** (where the prototype has more than one look for the same thing):
+
+{{styleq}}
+
+Full log with owners: [`design-system/decisions.md`](design-system/decisions.md).
+</script>
+<script type="application/json" id="design-md-components">
+{
+  "screen": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "_build": ".phone / :root", "_use": "Every screen's background and main text."},
+  "screen-dark": {"backgroundColor": "{colors.dark-bg}", "textColor": "{colors.dark-ink}", "_build": "[data-theme=dark]", "_use": "Dark theme: the same tokens with dark values (colors.dark-*); components don't change."},
+  "page-header": {"textColor": "{colors.ink}", "typography": "{typography.page-title}", "_build": "brandHeader(title, back, centered)", "_use": "The page title (h2). Pushed screens: centred with a back chevron; tab roots: left aligned."},
+  "compact-header": {"textColor": "{colors.ink}", "typography": "{typography.screen-title}", "_build": ".titlerow", "_use": "Title row for forms and sub-steps: back, centred title, optional text action."},
+  "button-primary": {"backgroundColor": "{colors.ink}", "textColor": "{colors.bg}", "typography": "{typography.body-strong}", "rounded": "{rounded.pill}", "height": "44px", "padding": "13px", "_build": ".cbtn.active", "_sel": ".cbtn", "_use": "The one main action on a screen (Create, Next, Apply). Full width with a 16px gutter."},
+  "button-primary-not-ready": {"backgroundColor": "{colors.surface-2}", "textColor": "{colors.ink-2}", "_build": ".cbtn", "_use": "Same button while the form is incomplete; still tappable to show what is missing."},
+  "button-secondary": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "typography": "{typography.body-strong}", "rounded": "{rounded.pill}", "height": "44px", "padding": "16px", "_build": ".plan-pill", "_sel": ".plan-pill", "_use": "Outline pill (1.5px --ink border), 16px side padding. .plan-pill.primary fills it with --ink."},
+  "add-button": {"backgroundColor": "{colors.ink}", "textColor": "{colors.bg}", "rounded": "14px", "size": "28px", "_build": "plusButton(item, kind)", "_sel": ".plusbtn", "_use": "The one + on every listing; opens Save / Add to a plan / Share. Becomes a green tick once anything is done with the item."},
+  "add-button-done": {"backgroundColor": "{colors.accent}", "textColor": "{colors.on-solid}", "_build": ".plusbtn.added", "_use": "The + once the item is saved, shared or in a plan: a green tick on every screen it appears."},
+  "chip": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "typography": "{typography.label}", "rounded": "11px", "height": "28px", "padding": "11px", "_build": "controlChip()", "_sel": ".chip", "_use": "Date, Sort, Filter above a list. 1.4px --hair border, 12px icon, 7 × 11 padding. Never wraps or truncates; the row scrolls."},
+  "chip-applied": {"backgroundColor": "{colors.ink}", "textColor": "{colors.bg}", "_build": "controlChip({ value, clear })", "_use": "The same chip once it has a value: shows the value and a 12px × that clears just that control."},
+  "chip-selection": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "typography": "{typography.small}", "rounded": "{rounded.3xl}", "height": "26px", "padding": "13px", "_build": ".fchip", "_sel": ".fchip", "_use": "Pick one or many in a sheet or under a header (filter options, preferences). 1.4px --hair border, 5 × 13 padding, wraps with an 8px gap."},
+  "chip-selection-selected": {"backgroundColor": "{colors.ink}", "textColor": "{colors.bg}", "_build": ".fchip.on", "_use": "Selected: --ink fill, no tick."},
+  "segmented-control": {"backgroundColor": "{colors.surface}", "textColor": "{colors.ink-2}", "rounded": "{rounded.lg}", "padding": "4px", "_build": "viewSwitchHtml('seg', …)", "_sel": ".seg", "_use": "Switches views of the same content (Listings / Plans, List / Guide / Map). Each segment has an icon and a word."},
+  "segmented-control-selected": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "_build": ".seg > span.on", "_use": "Exactly one segment is selected; it sits on --bg with --shadow-1."},
+  "switch": {"backgroundColor": "{colors.ink}", "rounded": "{rounded.pill}", "width": "48px", "height": "28px", "_build": ".toggleknob", "_sel": ".toggleknob", "_use": "On / off that applies at once. Off uses --ink-2; the knob is 20px."},
+  "input-field": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink}", "typography": "{typography.body}", "rounded": "11px", "height": "44px", "padding": "13px", "_build": ".field > .fl + .fi", "_use": "Label above (12.5/700), 1.5px --hair border, --ink border on focus, --danger border plus a message on error. The example text is --ink-2, never the label."},
+  "search-field": {"backgroundColor": "{colors.surface}", "textColor": "{colors.ink-2}", "typography": "{typography.body}", "rounded": "{rounded.lg}", "_build": ".searchfield", "_use": "16px magnifier and a hint; a × clears the query. On Home, search is the header icon that opens full-screen search."},
+  "listing-thumbnail": {"rounded": "{rounded.md}", "width": "120px", "height": "90px", "_build": ".result-thumb / .lthumb", "_use": "The one photo size for every listing row (4:3, full colour)."},
+  "divider": {"backgroundColor": "{colors.hair}", "height": "1px", "_build": "border-bottom: 1px solid var(--hair)", "_use": "Between rows, and card / input borders."},
+  "tag-free": {"backgroundColor": "{colors.free}", "textColor": "{colors.on-solid}", "rounded": "{rounded.xs}", "padding": "8px", "_build": ".pricetag", "_sel": ".pricetag", "_use": "The status-slot tag: 11/700, 2 × 8 padding. Free is green; a price is plain text (.pricetxt)."},
+  "tag-last-few": {"backgroundColor": "{colors.warn}", "textColor": "{colors.on-solid}", "rounded": "{rounded.xs}", "padding": "8px", "_build": ".sale-pill.not-started", "_use": "Caution about a listing: “Last few”, “Sale not started”."},
+  "tag-sold-out": {"backgroundColor": "{colors.danger}", "textColor": "{colors.on-solid}", "rounded": "{rounded.xs}", "padding": "8px", "_build": ".sale-pill.sold-out", "_use": "Sold out or cancelled. Red means only this (and destructive actions)."},
+  "tag-on-now": {"backgroundColor": "{colors.tint-blue}", "textColor": "{colors.tint-blue-ink}", "rounded": "{rounded.xs}", "padding": "8px", "_build": ".fest-status.on", "_use": "Happening now. Blue means only this."},
+  "category-tag": {"backgroundColor": "{colors.surface-2}", "textColor": "{colors.ink-2}", "typography": "{typography.label}", "rounded": "{rounded.sm}", "padding": "10px", "_build": ".catchip", "_sel": ".catchip", "_use": "Neutral tag: which brand a venue serves, or the serve. Category tags add the category tint."},
+  "category-tag-pink": {"backgroundColor": "{colors.tint-pink}", "textColor": "{colors.tint-pink-ink}", "typography": "{typography.label}", "rounded": "{rounded.sm}", "padding": "10px", "_build": ".catchip.event-type.cat-pink", "_use": "Category tag (catTint): Arts & Culture, Theatre, Visual Arts, Festivals. 12px icon."},
+  "category-tag-purple": {"backgroundColor": "{colors.tint-purple}", "textColor": "{colors.tint-purple-ink}", "typography": "{typography.label}", "rounded": "{rounded.sm}", "padding": "10px", "_build": ".catchip.event-type.cat-purple", "_use": "Category tag: Live Music, Club Nights, Comedy, Dating, Groups."},
+  "category-tag-orange": {"backgroundColor": "{colors.tint-orange}", "textColor": "{colors.tint-orange-ink}", "typography": "{typography.label}", "rounded": "{rounded.sm}", "padding": "10px", "_build": ".catchip.event-type.cat-orange", "_use": "Category tag: Food & Drink, Pub Quizzes, Street Performance, Venues."},
+  "category-tag-amber": {"backgroundColor": "{colors.tint-amber}", "textColor": "{colors.tint-amber-ink}", "typography": "{typography.label}", "rounded": "{rounded.sm}", "padding": "10px", "_build": ".catchip.event-type.cat-amber", "_use": "Category tag: Activities & Tours, Live Sport, Deals."},
+  "overlap-line": {"textColor": "{colors.tint-amber-ink}", "typography": "{typography.caption}", "_build": "whenLineHtml() > .when-olap", "_use": "Line 1 of a row that overlaps a plan item: “Sat 10 Oct 18:30 · Overlap”, 600 weight, 14px alert icon. A caution, never red."},
+  "hub-tile": {"backgroundColor": "{colors.surface}", "textColor": "{colors.ink}", "rounded": "{rounded.xl}", "padding": "14px", "_build": ".circle-tile", "_use": "Tappable tile on Hub (Plans, Connections, Groups): 24px icon, count, label."},
+  "bottom-sheet": {"backgroundColor": "{colors.bg}", "rounded": "{rounded.sheet}", "padding": "16px", "_build": ".scrim + .sheet", "_use": "Choices over the current screen. Rendered at phone level, --shadow-3, dismissed by the scrim and Escape."},
+  "tab-bar": {"backgroundColor": "{colors.bg}", "textColor": "{colors.ink-2}", "_build": "tabbar(active)", "_use": "Home, Search, Hub (raised centre), Notifications, Account. 24px icons; the active tab is --ink."},
+  "tab-bar-active": {"textColor": "{colors.ink}", "_build": ".tab.on", "_use": "The current tab."}
+}
+</script>
 <div id=a11y-announcer class=sr-only aria-live=polite aria-atomic=true></div>
 <div class="palette" id="palette"></div>
 
@@ -3369,19 +3715,31 @@ var SCREEN_GROUPS = [
     ['obinfo','Onboarding Info'],
     ['obprefs','Onboarding Prefs']
   ]},
-  { id:'events', seq:2, label:'Listings | Events', nav:'Events', screens:[
+  { id:'events', seq:2, label:'Listings | Live Entertainment', nav:'Events', screens:[
     ['home','Home'],
     ['events','Events list'],
     ['detail','Event detail'],
     ['filter','Filter'],
     ['datepicker','Dates']
   ]},
-  { id:'festivals', seq:3, label:'Listings | Festivals', nav:'Festivals', screens:[
+  { id:'eatdrink', seq:3, label:'Listings | Eat & Drink', screens:[
+  ]},
+  { id:'festivals', seq:4, label:'Listings | Festivals', nav:'Festivals', screens:[
     ['festivalsapp','All festivals'],
     ['festivaldetail','Festival detail'],
     ['festivaleventsapp','Festival events (view all)']
   ]},
-  { id:'plans', seq:4, label:'Plans', screens:[
+  { id:'experiences', seq:5, label:'Listings | Experiences', screens:[
+  ]},
+  { id:'deals', seq:6, label:'Listings | Deals', screens:[
+  ]},
+  { id:'brands', seq:7, label:'Listings | Brands', screens:[
+    ['brandlistapp','Brand list'],
+    ['branddetailapp','Brand profile'],
+    ['brandvenuesapp','Brand venues'],
+    ['venuedetailapp','Venue detail']
+  ]},
+  { id:'plans', seq:8, label:'Plans', screens:[
     ['plan','Plan detail'],
     ['createplan','Create plan'],
     ['interestprompts','Interest prompts'],
@@ -3397,18 +3755,24 @@ var SCREEN_GROUPS = [
     ['importpickplan','Import pick plan'],
     ['importconfirm','Import confirm']
   ]},
-  { id:'connections', seq:5, label:'Connections', screens:[
-    ['connections','Connections'],
-    ['connectionsapp','My connections'],
-    ['connectionspendingapp','Pending invites']
-  ]},
-  { id:'groups', seq:6, label:'Groups', screens:[
+  { id:'groups', seq:9, label:'Groups', screens:[
     ['resultsgroupsapp','Group results (discovery)'],
     ['groupsapp','Groups (Hub list)'],
     ['creategroupapp','Create group'],
     ['groupdetailapp','Group detail']
   ]},
-  { id:'hub', seq:7, label:'Hub', screens:[
+  { id:'connections', seq:10, label:'Connections', screens:[
+    ['connections','Connections'],
+    ['connectionsapp','My connections'],
+    ['connectionspendingapp','Pending invites']
+  ]},
+  { id:'search', seq:11, label:'Search', screens:[
+    ['searchapp','Search'],
+    ['resultseventsapp','Event results'],
+    ['resultsvenueapp','Venue results'],
+    ['locationapp','Location']
+  ]},
+  { id:'hub', seq:12, label:'Hub', screens:[
     ['hub','Hub'],
     ['profileapp','Profile'],
     ['shareprofileapp','Share profile'],
@@ -3418,29 +3782,17 @@ var SCREEN_GROUPS = [
     ['saveddealsapp','Saved deals'],
     ['savedvenuesapp','Saved venues']
   ]},
-  { id:'search', seq:8, label:'Search', screens:[
-    ['searchapp','Search'],
-    ['resultseventsapp','Event results'],
-    ['resultsvenueapp','Venue results'],
-    ['locationapp','Location']
-  ]},
-  { id:'notifications', seq:9, label:'Notifications', screens:[
+  { id:'notifications', seq:13, label:'Notifications', screens:[
     ['importnotification','Import notif'],
     ['notificationsapp','Notifications']
   ]},
-  { id:'account', seq:10, label:'Account', screens:[
+  { id:'account', seq:14, label:'Account', screens:[
     ['accountapp','Account'],
     ['notifprefsapp','Notification prefs'],
     ['marketingapp','Marketing'],
     ['termsapp','Terms'],
     ['privacyapp','Privacy'],
     ['faqapp','FAQ']
-  ]},
-  { id:'brands', seq:11, label:'Brands', screens:[
-    ['brandlistapp','Brand list'],
-    ['branddetailapp','Brand profile'],
-    ['brandvenuesapp','Brand venues'],
-    ['venuedetailapp','Venue detail']
   ]}
 ];
 function screenGroupById(id){
@@ -3546,9 +3898,10 @@ var SCREEN_VARIANTS = {
 };
 
 // Per-screen metadata convention (agreed 15 Sept, no convention existed before this):
-//   Epic       -> SCREEN_GROUPS[].label: Peter's 11 sections, in his order (Onboarding,
-//                 Listings | Events, Listings | Festivals, Plans, Connections, Groups, Hub,
-//                 Search, Notifications, Account, Brands); names/URLs in SCREEN_META_DEFAULTS
+//   Epic       -> SCREEN_GROUPS[].label: Peter's 14 sections, in his order (Onboarding,
+//                 Listings | Live Entertainment, Listings | Eat & Drink, Listings | Festivals,
+//                 Listings | Experiences, Listings | Deals, Listings | Brands, Plans, Groups,
+//                 Connections, Search, Hub, Notifications, Account); names/URLs in SCREEN_META_DEFAULTS
 //   Feature    -> the screen's own label (grp.screens[i][1], or a SCREEN_VARIANTS[].label)
 //   Variant    -> "1 of 1" for a plain screen, "X of Y" for each SCREEN_VARIANTS entry —
 //                 a LAYOUT alternative (different structure/design for the same feature)
@@ -3602,8 +3955,8 @@ var SCREEN_STATES = {
            sheetItem:{ kind:'events', item:{ title:'Manouche Gypsy Jazz', when:'Tonight 19:30', venue:'Sunflower', photo:'jazz', tag:'Free' } } } },
     { sid:'home', note:'[festivals \u2014 list]', section:'festivals', params:{ toggleSide:'listings', type:'festivals' }, ui:{ festTabView:'list' } },
     { sid:'home', note:'[festivals \u2014 calendar]', section:'festivals', params:{ toggleSide:'listings', type:'festivals' }, ui:{ festTabView:'calendar', festCalMonth:'' } },
-    { sid:'home', note:'[eat & drink]', params:{ toggleSide:'listings', type:'venues' }, ui:{ eatSub:'all' } },
-    { sid:'home', note:'[venues \u2014 venue type sheet]', params:{ toggleSide:'listings', type:'venues', venueTypeSheetOpen:true } },
+    { sid:'home', note:'[eat & drink]', section:'eatdrink', params:{ toggleSide:'listings', type:'venues' }, ui:{ eatSub:'all' } },
+    { sid:'home', note:'[venues \u2014 venue type sheet]', section:'eatdrink', params:{ toggleSide:'listings', type:'venues', venueTypeSheetOpen:true } },
     { sid:'home', note:'[guest \u2014 sign-in prompt]', params:{ toggleSide:'listings', type:'events', sessionMode:'guest' }, ui:{ guestPromptOpen:true, guestPromptKind:'plan' } }
   ],
   detail: [
@@ -4397,7 +4750,7 @@ var UI = { screen:'onboardcarousel', spec:false, focus:'promptPace', planAdd:fal
            guestPromptOpen:false, guestPromptKind:'general',
            notifFilterPill:'allpill', mapColorPins:false,
            promptOrigin:'standalone', indexQuery:'', paletteOpen:false,
-           iconQuery:'', iconSel:'', compQuery:'', handoffFormat:'css',
+           iconQuery:'', iconSel:'', compQuery:'', handoffFormat:'design',
            permStep:0, obCityModal:false,
            brandFilter:'', brandSort:'popular', brandSortOpen:false, brandId:1, brandVenueView:'list', brandVenuePin:0, brandVenueTypeFilter:'', venueId:'v1',
            festivalId:'cnb',
@@ -5191,9 +5544,9 @@ var PLANS = [
   // Dates line up with the listings' "tonight" (LISTING_TONIGHT, Wed 7 Oct) so
   // "plans that cover tonight" can be shown (Saved vs Plans, Oct 2026).
   {name:'Birthday weekend',dates:'Fri 9 \u2013 Sun 11 Oct',from:'2026-10-09',to:'2026-10-11',people:4,role:'organiser',
-   city:'Belfast',status:'2 of 5 booked', photo:'plans', countdown:'In 2 days', initials:'PK'},
+   city:'Belfast',status:'2 of 5 booked', photo:'plans', countdown:'In 2 days', initials:'AM'},
   {name:'Work night out',dates:'Wed 7 Oct',from:'2026-10-07',to:'2026-10-07',people:7,role:'organiser',
-   city:'Belfast',status:'Nothing booked yet', photo:'cocktail', countdown:'Tonight', initials:'PK'},
+   city:'Belfast',status:'Nothing booked yet', photo:'cocktail', countdown:'Tonight', initials:'AM'},
   {name:'Dublin trip',dates:'Sat 17 Oct',from:'2026-10-17',to:'2026-10-17',people:2,role:'member',
    city:'Dublin',status:'All booked', photo:'mural', countdown:'15 days to go', initials:'PM'}
 ];
@@ -5201,14 +5554,14 @@ var PAST_PLANS = [
   {name:'Hen do \u2014 Glasgow',dates:'Sat 14 Jun',people:9,role:'member',
    city:'Glasgow',status:'', photo:'festival', countdown:'', initials:'AD'},
   {name:'Leeds weekender',dates:'Fri 2 \u2013 Sun 4 May',people:3,role:'organiser',
-   city:'Leeds',status:'', photo:'arena', countdown:'', initials:'PK'}
+   city:'Leeds',status:'', photo:'arena', countdown:'', initials:'AM'}
 ];
 var DRAFT_PLANS = [
   {name:'Maybe Dublin in Oct?',dates:'Dates not set yet',people:1,role:'organiser',
-   city:'Dublin',status:'', photo:'cathedral', countdown:'', initials:'PK'}
+   city:'Dublin',status:'', photo:'cathedral', countdown:'', initials:'AM'}
 ];
 var PLAN_MEMBERS = [
-  {name:'Prince Kukreja', initials:'PK', color:'#c23b57', role:'organiser', sub:'Plan Creator'},
+  {name:'Alex Morgan', initials:'AM', color:'#c23b57', role:'organiser', sub:'Plan Creator'},
   {name:'Ellie Marsh', initials:'EM', color:'#2f7d68', role:'member', status:'accepted',
    statusLabel:'Accepted', sub:'Member'},
   {name:'Sam Kowalski', initials:'SK', color:'#3a5a78', role:'member', status:'accepted',
@@ -5219,7 +5572,7 @@ var PLAN_MEMBERS = [
    statusLabel:'Declined', sub:'Member'}
 ];
 var PLAN_COMMENTS = [
-  { id:'c1', initials:'PK', color:'#c23b57', name:'Prince', time:'2h ago', text:'Should we book dinner for Friday night?', unread:false },
+  { id:'c1', initials:'AM', color:'#c23b57', name:'Alex', time:'2h ago', text:'Should we book dinner for Friday night?', unread:false },
   { id:'c2', initials:'EM', color:'#2f7d68', name:'Ellie', time:'1h ago', text:'Yes! I know a great place on the Falls Road', unread:false },
   { id:'c3', initials:'SK', color:'#3a5a78', name:'Sam', time:'45m ago', text:'+1 to dinner, I\'m starving already', unread:false },
   { id:'c4', initials:'JF', color:'#93650f', name:'Jordan', time:'12m ago', text:'Can we move Saturday start to 8pm instead?', unread:true },
@@ -5265,7 +5618,7 @@ var LIVE_NOTIFS = [
   {kind:'img', cat:'Plans', kicker:'Plan Invitation Accepted', title:'Anna Doyle has accepted your invitation', sub:'Anna Doyle has accepted your invitation to Birthday weekend', img:1},
   {kind:'av', cat:'Connections', kicker:'New Connection Requested', title:'Martin Hughes wants to connect with you', sub:'Connection request', av:'MH'},
   {kind:'img', cat:'Plans', kicker:'Plan Invite Declined', title:'Sarah Quinn declined your invitation to Work night out', sub:'Invitation to Work night out has been declined', img:1},
-  {kind:'img', cat:'Plans', kicker:'Plan Invitation Accepted', title:'Prince Kukreja has accepted your invitation', sub:'Invitation to England vs India has been accepted', img:1},
+  {kind:'img', cat:'Plans', kicker:'Plan Invitation Accepted', title:'Jordan Fitzgerald has accepted your invitation', sub:'Invitation to England vs India has been accepted', img:1},
   {kind:'av', cat:'Plans', kicker:'New Plan Event', title:'Ellie Marsh added an event to Birthday weekend', sub:'Plan updated', av:'EM'},
   {kind:'img', cat:'System', kicker:'Welcome to GetSociable', title:"You're all set, [name]", sub:'Discover events, save your favourites, and start planning nights out with friends.', img:1}
 ];
@@ -5644,7 +5997,7 @@ var LIVE_GROUPS = [
     description:'Monthly dinner party, different host’s kitchen each time. First one still being planned.',
     city:'Belfast', category:'food', visibility:GROUP_VISIBILITY.UNLISTED,
     joinQuestion:'What’s your favourite thing to cook?',
-    membership:'owner', memberCount:1, memberAvatars:['PK'], plans:[] },
+    membership:'owner', memberCount:1, memberAvatars:['AM'], plans:[] },
 
   // Not a member, and a request is already sitting with the owner — this is
   // the Requester Pending State (screen 5), also surfaced in Connections
@@ -6860,7 +7213,7 @@ function plansScreen(S){
       status:'Travel and accommodation imported',
       photo:'cathedral',
       countdown:'',
-      initials:'PK'
+      initials:'AM'
     });
   }
   if (S.plansRole !== 'all')
@@ -7586,7 +7939,7 @@ function scrHub(S){
 
   return '<h2 class="pagetitle">Hub</h2>'
        + '<div class="feed">'
-       + '<div class="hubprof"><div class="hubav">' + seedThumbInner('avatar', 120, 120) + '</div><div><div class="hn">Prince Kukreja</div>'
+       + '<div class="hubprof"><div class="hubav">' + seedThumbInner('avatar', 120, 120) + '</div><div><div class="hn">Alex Morgan</div>'
        + (UI.homeCity
           ? '<div role="button" tabindex="0" class="hl hl-set' + tz() + '" data-screen="profileapp" aria-label="Home location ' + festivalAttr(UI.homeCity) + ', change">' + ICONS.pin + escapeHtml(UI.homeCity) + '</div></div></div>'
           : '<div role="button" tabindex="0" class="hl' + tz() + '" data-screen="profileapp">Add home location</div></div></div>')
@@ -8290,9 +8643,9 @@ function scrProfileApp(){
   return '<div class="brandpage">'
        + brandHeader('Profile', 'backToHub', true)
        + '<div class="feed"><div class="brand-body">'
-       + '<div class="brand-field"><label>First Name</label><input aria-label="First Name" class="brand-input" value="Prince"></div>'
-       + '<div class="brand-field"><label>Last Name</label><input aria-label="Last Name" class="brand-input" value="Kukreja"></div>'
-       + '<div class="brand-field"><label>Email</label><input aria-label="Email" class="brand-input muted" value="princekukreja64@gmail.com"></div>'
+       + '<div class="brand-field"><label>First Name</label><input aria-label="First Name" class="brand-input" value="Alex"></div>'
+       + '<div class="brand-field"><label>Last Name</label><input aria-label="Last Name" class="brand-input" value="Morgan"></div>'
+       + '<div class="brand-field"><label>Email</label><input aria-label="Email" class="brand-input muted" value="alex.morgan@email.com"></div>'
        + '<div class="brand-field"><label>Phone</label><input aria-label="Phone" class="brand-input muted" value=""></div>'
        + '<div class="brand-field"><label>Home City or Town</label><input aria-label="Home City or Town" class="brand-input home-city-input" value="' + festivalAttr(UI.homeCity || 'London') + '" placeholder="Start typing your city…"></div>'
        + '<div class="brand-field"><label>Gender</label><select aria-label="Gender" class="brand-input" style="height:44px;appearance:auto"><option>Man</option><option>Woman</option><option>Non-binary</option><option>Prefer not to say</option></select></div>'
@@ -8342,7 +8695,7 @@ function scrShareProfileApp(){
        + brandHeader('Share Profile', 'backToHub', true)
        + '<div class="feed"><div class="brand-body" style="padding-top:6px">'
        + '<div class="qrbox">' + qrSvg() + '</div>'
-       + '<div class="qrname">Prince Kukreja</div>'
+       + '<div class="qrname">Alex Morgan</div>'
        + '<div class="brand-actions3">'
        + '<button class="brand-btn' + tz() + '">Share<br>Profile</button>'
        + '<button class="brand-btn' + tz() + '">Copy<br>Link</button>'
@@ -8395,7 +8748,7 @@ function scrMyPlansApp(S){
     list = list.slice(0, 1);
   }
   if (tab !== 'past' && S.hasPlans !== 'no')
-    list = createdPlans().map(function(p){ return { name:p.name, dates:p.dates, role:'organiser', city:p.city, photo:'plans', countdown:'Just created', initials:'PK', planId:p.id }; }).concat(list);
+    list = createdPlans().map(function(p){ return { name:p.name, dates:p.dates, role:'organiser', city:p.city, photo:'plans', countdown:'Just created', initials:'AM', planId:p.id }; }).concat(list);
   if (role !== 'all')
     list = list.filter(function(p){ return p.role === role; });
 
@@ -8428,7 +8781,7 @@ function scrMyPlansApp(S){
              ? '<span class="myplan-go">' + pl.countdown + '</span>' : '')
            + '</div><div class="myplan-when">' + pl.dates + '</div>'
            + '<div class="myplan-meta">'
-           + '<div class="myplan-av">' + (pl.initials || 'PK') + '</div>'
+           + '<div class="myplan-av">' + (pl.initials || 'AM') + '</div>'
            + '<span>' + pl.city + ' | ' + roleLabel + '</span></div>'
            + '</div></div>';
     }
@@ -11851,7 +12204,7 @@ function screenIndexHtml(){
        + (UI.indexEdit ? 'Done editing' : 'Edit names') + '</button>'
        + (UI.indexEdit ? '<span class="gx-saved" aria-live="polite">' + (SCREEN_META.saved ? 'Saved on this device \xb7 ' + SCREEN_META.saved : 'Changes save on this device') + '</span>'
          + '<button class="tbtn" data-act="indexExportCsv">Export CSV</button>'
-         + '<button class="tbtn" data-act="indexExportJson">Export for Prince</button>'
+         + '<button class="tbtn" data-act="indexExportJson">Export JSON</button>'
          + '<button class="tbtn" data-act="indexImport">Import</button>'
          + '<input type="file" accept=".json,application/json" class="gx-import" hidden>' : '')
        + '<button class="tbtn" data-act="indexDark">' + (A.dark === 'on' ? 'Dark' : 'Light') + '</button>'
@@ -11861,7 +12214,7 @@ function screenIndexHtml(){
        + (UI.indexEdit
          ? '<div class="gx-editlayout"><div class="gx-groups">' + groups + '</div>'
            + '<aside class="gx-notes"><label for="gx-notes-box">Notes</label>'
-           + '<div class="gx-notes-sub">Rough notes: categories, renames, anything for Prince. Saved with the names.</div>'
+           + '<div class="gx-notes-sub">Rough notes: categories, renames, anything to flag. Saved with the names.</div>'
            + '<textarea id="gx-notes-box" class="gx-edit" data-meta-field="notes" placeholder="e.g. Move Signup and Interest prompts to Plans">'
            + escapeHtml(SCREEN_META.notes || '') + '</textarea></aside></div>'
          : groups)
@@ -12733,18 +13086,22 @@ function dtcgTokens(src){
     color:{ light:{}, dark:{} },
     tint:{ light:{}, dark:{} },
     font:{
-      family:{ base:tok('fontFamily', ['Poppins', 'system-ui', 'sans-serif'], 'Loaded weights: 400/500/600/700/800 only') },
-      size:{}, weight:{}, lineHeight:{}
+      family:{}, size:{}, weight:{}, lineHeight:{}, letterSpacing:{}
     },
     space:{}, radius:{}, shadow:{ light:{}, dark:{} },
+    typography:{},
     duration:{}, easing:{}, icon:{ size:{} }, media:{}, a11y:{}, zIndex:{}, scrim:{}
   };
+  var styles = {};
   Object.keys(light).forEach(function(k){
     var v = light[k], d = desc[k];
     if (/^#/.test(v)) {
       var bucket = k.indexOf('tint-') === 0 ? out.tint.light : out.color.light;
       bucket[k.replace(/^tint-/, '')] = tok('color', colorValue(v), d);
     } else if (k.indexOf('fs-') === 0) out.font.size[k.slice(3)] = tok('dimension', dim(v), d);
+    else if (k === 'font-sans') out.font.family.sans = tok('fontFamily', v.split(',').map(function(f){ return f.trim().replace(/^['"]|['"]$/g, ''); }), d);
+    else if (k.indexOf('ls-') === 0) out.font.letterSpacing[k.slice(3)] = tok('dimension', dim(v), d);
+    else if (k.indexOf('type-') === 0) styles[k.slice(5)] = { v:v, d:d };
     else if (k.indexOf('fw-') === 0) out.font.weight[k.slice(3)] = tok('fontWeight', parseInt(v, 10), d);
     else if (k.indexOf('lh-') === 0) out.font.lineHeight[k.slice(3)] = tok('number', parseFloat(v), d);
     else if (k.indexOf('space-') === 0) out.space[k.slice(6)] = tok('dimension', dim(v), d);
@@ -12766,6 +13123,17 @@ function dtcgTokens(src){
     else if (k === 'scrim') out.scrim.color = tok('color', rgbaValue(v), d);
     else if (k === 'blur-scrim') out.scrim.blur = tok('dimension', dim(v), d);
   });
+  // Text styles: DTCG typography composites whose parts are aliases of the
+  // size / weight / line-height / letter-spacing tokens (one source per value).
+  Object.keys(styles).forEach(function(name){
+    var m = styles[name].v.match(/var\(--fw-([a-z]+)\)\s+var\(--fs-([a-z0-9-]+)\)\/var\(--lh-([a-z]+)\)\s+var\(--font-([a-z]+)\)/);
+    if (!m) throw new Error('--type-' + name + ' must be: var(--fw-*) var(--fs-*)/var(--lh-*) var(--font-*)');
+    out.typography[name] = tok('typography', {
+      fontFamily:'{font.family.' + m[4] + '}', fontSize:'{font.size.' + m[2] + '}', fontWeight:'{font.weight.' + m[1] + '}',
+      lineHeight:'{font.lineHeight.' + m[3] + '}',
+      letterSpacing:out.font.letterSpacing[name] ? '{font.letterSpacing.' + name + '}' : { value:0, unit:'px' }
+    }, styles[name].d);
+  });
   Object.keys(dark).forEach(function(k){
     var v = dark[k], d = desc[k];
     if (/^#/.test(v)) {
@@ -12779,6 +13147,155 @@ function dtcgTokens(src){
   });
   return out;
 }
+// DESIGN.md — the whole design system in one file for developers and AI agents,
+// in the DESIGN.md format (Google Labs): YAML front matter with the tokens, then
+// the standard sections. Generated from the tokens (ds = dtcgTokens()), the
+// template and component block in this page, and the product-rule tables, by the
+// console (Library > Developer handoff) and by tools/build-tokens.js, so the
+// repo's DESIGN.md and the console's copy are always the same text.
+function designMd(tpl, ds, data){
+  function ref(r){ var o = ds; String(r).replace(/^\{|\}$/g, '').split('.').forEach(function(k){ o = o && o[k]; }); return o; }
+  function num(n){ return Math.round(n * 1000) / 1000; }
+  function dimTxt(v){ return v.value === 9999 ? '999px' : num(v.value) + v.unit; }
+  function val(t){
+    var v = t.$value;
+    if (t.$type === 'color') return v.alpha != null && v.alpha < 1
+      ? 'rgba(' + v.components.map(function(c){ return Math.round(c * 255); }).join(', ') + ', ' + v.alpha + ')' : v.hex;
+    if (t.$type === 'dimension') return dimTxt(v);
+    if (t.$type === 'duration') return v.value + v.unit;
+    if (t.$type === 'cubicBezier') return 'cubic-bezier(' + v.join(', ') + ')';
+    if (t.$type === 'shadow') return v.offsetX.value + 'px ' + v.offsetY.value + 'px ' + v.blur.value + 'px ' + val({ $type:'color', $value:v.color });
+    if (t.$type === 'fontFamily') return v.join(', ');
+    return String(v);
+  }
+  function style(name){
+    var v = ds.typography[name].$value, ls = typeof v.letterSpacing === 'string' ? ref(v.letterSpacing).$value : v.letterSpacing;
+    var part = function(s){ return s.replace(/^\{|\}$/g, '').split('.').pop(); };
+    return { size:ref(v.fontSize).$value.value, weight:ref(v.fontWeight).$value, lh:ref(v.lineHeight).$value,
+             ls:ls.value, family:ref(v.fontFamily).$value[0],
+             css:'var(--fw-' + part(v.fontWeight) + ') var(--fs-' + part(v.fontSize) + ')/var(--lh-' + part(v.lineHeight) + ') var(--font-' + part(v.fontFamily) + ')' };
+  }
+  function table(head, rows){
+    return '| ' + head.join(' | ') + ' |\n| ' + head.map(function(){ return '---'; }).join(' | ') + ' |\n'
+      + rows.map(function(r){ return '| ' + r.map(function(c){ return String(c).replace(/\|/g, '\\|').replace(/\n/g, ' '); }).join(' | ') + ' |'; }).join('\n');
+  }
+  function q(s){ s = String(s); return /^[\w.-]+$/.test(s) && !/^\d/.test(s) && !/^(true|false|null|yes|no)$/i.test(s) ? s : '"' + s.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"'; }
+  function key(k){ return /^\d/.test(k) ? '"' + k + '"' : k; }
+  var desc = function(t){ return (t && t.$description) || ''; };
+  var light = ds.color.light, dark = ds.color.dark;
+  var resolve = function(v){ return /^\{.+\}$/.test(v) ? v : v; };
+
+  // ---- front matter -------------------------------------------------------
+  var y = '---\nversion: alpha\nname: GetSociable\n'
+    + 'description: ' + q('Design system of the GetSociable consumer app (Listings and Plans): mobile, light and dark themes, Poppins, one green accent. Generated from index.html; tokens are W3C DTCG in design-system/tokens.json.') + '\n';
+  y += 'colors:\n';
+  y += '  primary: "{colors.ink}"\n  secondary: "{colors.ink-2}"\n  tertiary: "{colors.accent}"\n  neutral: "{colors.bg}"\n'
+     + '  on-surface: "{colors.ink}"\n  error: "{colors.danger}"\n';
+  Object.keys(light).forEach(function(k){ y += '  ' + key(k) + ': "' + val(light[k]) + '"\n'; });
+  Object.keys(ds.tint.light).forEach(function(k){ y += '  tint-' + k + ': "' + val(ds.tint.light[k]) + '"\n'; });
+  Object.keys(dark).forEach(function(k){ y += '  dark-' + k + ': "' + val(dark[k]) + '"\n'; });
+  Object.keys(ds.tint.dark).forEach(function(k){ y += '  dark-tint-' + k + ': "' + val(ds.tint.dark[k]) + '"\n'; });
+  y += 'typography:\n';
+  Object.keys(ds.typography).forEach(function(k){
+    var s = style(k);
+    y += '  ' + k + ':\n    fontFamily: ' + q(s.family) + '\n    fontSize: ' + num(s.size) + 'px\n    fontWeight: ' + s.weight
+       + '\n    lineHeight: ' + s.lh + (s.ls ? '\n    letterSpacing: ' + s.ls + 'px' : '') + '\n';
+  });
+  y += 'rounded:\n';
+  Object.keys(ds.radius).forEach(function(k){
+    var t = ds.radius[k];
+    if (/50%/.test(desc(t))) return;   // circle: 50%, not a dimension
+    y += '  ' + key(k) + ': ' + dimTxt(t.$value) + '\n';
+  });
+  y += 'spacing:\n';
+  Object.keys(ds.space).forEach(function(k){ y += '  ' + key(k) + ': ' + dimTxt(ds.space[k].$value) + '\n'; });
+  y += '  tap-min: ' + dimTxt(ds.a11y['tap-min'].$value) + '\n';
+  y += 'components:\n';
+  Object.keys(data.components).forEach(function(c){
+    y += '  ' + c + ':\n';
+    var o = data.components[c];
+    Object.keys(o).forEach(function(p){ if (p.charAt(0) !== '_') y += '    ' + p + ': ' + q(resolve(o[p])) + '\n'; });
+  });
+  y += '---';
+
+  // ---- body tables ---------------------------------------------------------
+  var t = {};
+  t.colors = table(['Token', 'Light', 'Dark', 'Role'], Object.keys(light).map(function(k){
+    return ['`--' + k + '`', '`' + val(light[k]) + '`', '`' + (dark[k] ? val(dark[k]) : val(light[k])) + '`', desc(light[k])];
+  }));
+  t.tints = table(['Tint', 'Light fill / ink', 'Dark fill / ink', 'Use'], Object.keys(ds.tint.light).filter(function(k){ return !/-ink$/.test(k); }).map(function(k){
+    return ['`--tint-' + k + '`', '`' + val(ds.tint.light[k]) + '` / `' + val(ds.tint.light[k + '-ink']) + '`',
+            '`' + val(ds.tint.dark[k]) + '` / `' + val(ds.tint.dark[k + '-ink']) + '`', desc(ds.tint.light[k])];
+  }));
+  t.type = table(['Text style', 'CSS', 'Size', 'Weight', 'Line height', 'Tracking', 'Use'], Object.keys(ds.typography).map(function(k){
+    var s = style(k);
+    return ['`' + k + '`', '`font: var(--type-' + k + ')`', num(s.size) + 'px', s.weight, s.lh, s.ls ? s.ls + 'px' : '0', desc(ds.font.size[k]) || desc(ds.typography[k])];
+  }));
+  t.space = table(['Token', 'Value', 'Use'], Object.keys(ds.space).map(function(k){
+    return ['`--' + (k === 'gutter' ? 'gutter' : 'space-' + k) + '`', dimTxt(ds.space[k].$value), desc(ds.space[k])];
+  }));
+  t.radius = table(['Token', 'Value', 'Use'], Object.keys(ds.radius).map(function(k){
+    return ['`--radius-' + k + '`', /50%/.test(desc(ds.radius[k])) ? '50%' : dimTxt(ds.radius[k].$value), desc(ds.radius[k]).replace(/ — CSS uses.*$/, '')];
+  }));
+  t.shadow = table(['Token', 'Light', 'Dark', 'Use'], Object.keys(ds.shadow.light).map(function(k){
+    return ['`--shadow-' + k + '`', '`' + val(ds.shadow.light[k]) + '`', '`' + val(ds.shadow.dark[k]) + '`', desc(ds.shadow.light[k])];
+  }));
+  t.z = table(['Token', 'Value', 'Layer'], Object.keys(ds.zIndex).map(function(k){
+    return ['`--z-' + k + '`', ds.zIndex[k].$value, desc(ds.zIndex[k])];
+  }));
+  t.motion = table(['Token', 'Value', 'Use'], Object.keys(ds.duration).map(function(k){
+    return ['`--dur-' + k + '`', val(ds.duration[k]), desc(ds.duration[k])];
+  }).concat(Object.keys(ds.easing).map(function(k){
+    return ['`--ease-' + k + '`', '`' + val(ds.easing[k]) + '`', desc(ds.easing[k])];
+  })));
+  t.icons = table(['Token', 'Size', 'Use'], Object.keys(ds.icon.size).map(function(k){
+    return ['`--icon-' + k + '`', dimTxt(ds.icon.size[k].$value), desc(ds.icon.size[k])];
+  }));
+  t.a11y = table(['Rule', 'Value'], [
+    ['Tap target, every interactive element, both axes', dimTxt(ds.a11y['tap-min'].$value) + ' (`--tap-min`)'],
+    ['Text contrast, body / large text, both themes', '4.5:1 / 3:1'],
+    ['Smallest readable text', dimTxt(ds.a11y['font-min'].$value) + ' (`--font-min`)'],
+    ['Text never clips', 'ellipsis or line clamp'],
+    ['Every control has an accessible name', 'text, `aria-label` or `<label>`'],
+    ['State in ARIA, not colour', '`aria-selected` / `-checked` / `-pressed` / `-disabled`'],
+    ['Bottom sheets', '`role="dialog"` + `aria-modal="true"` + a name; Escape and the scrim close them'],
+    ['One page heading per screen', '`h1` on Home and login, `h2` elsewhere; sections `h3`'],
+    ['Images and icons', '`alt` on every image; decorative icons `aria-hidden="true"`'],
+    ['Focus visible', '2px `--accent` ring, 2px offset'],
+    ['Reduced motion', 'honour `prefers-reduced-motion`']
+  ]);
+  t.components = table(['Component', 'Build with', 'Key values', 'Use'], Object.keys(data.components).map(function(c){
+    var o = data.components[c], parts = [];
+    Object.keys(o).forEach(function(p){
+      if (p.charAt(0) === '_') return;
+      var v = o[p], shown = v;
+      if (/^\{.+\}$/.test(v)) {
+        var path = v.replace(/^\{colors\.dark-tint-/, '{tint.dark.').replace(/^\{colors\.tint-/, '{tint.light.')
+          .replace(/^\{colors\.dark-/, '{color.dark.').replace(/^\{colors\./, '{color.light.')
+          .replace(/^\{rounded\./, '{radius.').replace(/^\{spacing\./, '{space.');
+        var r = ref(path);
+        if (r && r.$type === 'typography') { var st = style(v.replace(/^\{typography\.|\}$/g, '')); shown = v.replace(/^\{typography\.|\}$/g, '') + ' (' + num(st.size) + '/' + st.weight + ')'; }
+        else shown = v.replace(/[{}]/g, '').replace(/^colors\.dark-/, '--').replace(/^colors\./, '--').replace(/^rounded\./, '--radius-')
+          + (r && r.$type ? ' (' + val(r) + ')' : '') + (/^\{colors\.dark-/.test(v) ? ' dark' : '');
+      }
+      parts.push(p + ' ' + shown);
+    });
+    return ['`' + c + '`', '`' + o._build + '`', parts.join(' · '), o._use];
+  }));
+  t.rules = data.rules.map(function(r){ return '- **' + r[0] + ':** ' + r[1]; }).join('\n');
+  t.open = table(['Decision', 'Built today', 'Owner'], data.open);
+  t.styleq = data.styleq.map(function(s){ return '- **' + s.q + '** ' + s.options; }).join('\n');
+  t.fontlink = '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+    + '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+    + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@'
+    + Object.keys(ds.font.weight).map(function(k){ return ds.font.weight[k].$value; }).join(';') + '&display=swap">';
+  t.frontmatter = y;
+  return tpl.replace(/^\s+|\s+$/g, '').replace(/\{\{([a-z0-9]+)\}\}/g, function(m, k){
+    if (t[k] == null) throw new Error('DESIGN.md template: unknown {{' + k + '}}');
+    return t[k];
+  }) + '\n';
+}
+
 // The live token set, parsed once from this page's own stylesheet.
 var DS = dtcgTokens(Array.prototype.map.call(document.querySelectorAll('style'),
   function(s){ return s.textContent; }).join('\n'));
@@ -12818,26 +13335,18 @@ var LIB_TABS = [
 // tables only add what CSS can't hold: which weight/sample a role uses and a
 // one-line usage note. Sizes, steps and radii are never retyped here.
 var LOADED_WEIGHTS = Object.keys(DS.font.weight).map(function(k){ return String(DS.font.weight[k].$value); });
-var TYPE_ROLES = [
-  // lh = the line-height token to pair with the role (padded tags/chips and one-line marks use --lh-none).
-  { tok:'caption',       weight:500, tracking:0,    lh:'snug',   sample:'Sat 10 Oct 19:30 · Ulster Hall' },
-  { tok:'label',         weight:600, tracking:0,    lh:'none',   sample:'Live Music' },
-  { tok:'small',         weight:600, tracking:0,    lh:'tight',  sample:'List · Guide · Map' },
-  { tok:'body',          weight:500, tracking:0,    lh:'normal', sample:'Three nights of jazz across the Cathedral Quarter.' },
-  { tok:'body-strong',   weight:600, tracking:0,    lh:'tight',  sample:'Add to plan' },
-  { tok:'card-title',    weight:700, tracking:0,    lh:'tight',  sample:'Manouche Gypsy Jazz' },
-  { tok:'lead',          weight:500, tracking:0,    lh:'normal', sample:'Events you save show up here.' },
-  { tok:'row-title-lg',  weight:700, tracking:0,    lh:'tight',  sample:'Friday night out' },
-  { tok:'sheet-title',   weight:700, tracking:0,    lh:'tight',  sample:'Sort events' },
-  { tok:'screen-title',  weight:700, tracking:0,    lh:'tight',  sample:'Filters' },
-  { tok:'page-title',    weight:700, tracking:-0.3, lh:'tight',  sample:'Saved events' },
-  { tok:'display-sm',    weight:700, tracking:-0.4, lh:'tight',  sample:'What’s on tonight?' },
-  { tok:'display',       weight:800, tracking:-0.6, lh:'none',   sample:'Sociable' }
-].filter(function(r){ return DS.font.size[r.tok]; }).map(function(r){
-  var t = DS.font.size[r.tok];
-  return { key:r.tok, size:dsPx(t), weight:r.weight, tracking:r.tracking, sample:r.sample, lh:r.lh,
-           role:r.tok.replace(/-/g, ' ').replace(/^./, function(c){ return c.toUpperCase(); }),
-           use:t.$description || '' };
+// The text styles come from the --type-* tokens (DS.typography); this only adds
+// a sample line per role for the Library.
+var TYPE_SAMPLES = { caption:'Sat 10 Oct 19:30 · Ulster Hall', label:'Live Music', small:'List · Guide · Map',
+  body:'Three nights of jazz across the Cathedral Quarter.', 'body-strong':'Add to plan', 'card-title':'Manouche Gypsy Jazz',
+  lead:'Events you save show up here.', 'row-title-lg':'Friday night out', 'sheet-title':'Sort events', 'screen-title':'Filters',
+  'page-title':'Saved events', 'display-sm':'What’s on tonight?', display:'Sociable' };
+var TYPE_ROLES = Object.keys(DS.typography).map(function(k){
+  var st = dsTextStyle(k), v = DS.typography[k].$value;
+  return { key:k, size:st.size, weight:st.weight, tracking:st.tracking, sample:TYPE_SAMPLES[k] || k,
+           lh:v.lineHeight.split('.').pop().replace('}', ''),
+           role:k.replace(/-/g, ' ').replace(/^./, function(c){ return c.toUpperCase(); }),
+           use:(DS.font.size[k] && DS.font.size[k].$description) || DS.typography[k].$description || '' };
 });
 var TYPE_SCALE = TYPE_ROLES;   // kept for older call sites
 var SPACE_USE = { '0':'Reset', '2':'Hairline nudges, title → subtitle', '4':'Tight inner gaps',
@@ -12884,7 +13393,7 @@ var SHARE_PRESETS = [
 // export changes with it, so what a developer copies is always current.
 // =====================================================================
 var HANDOFF_FORMATS = [
-  ['json','W3C tokens (JSON)'], ['css','CSS'], ['scss','SCSS'],
+  ['design','DESIGN.md'], ['json','W3C tokens (JSON)'], ['css','CSS'], ['scss','SCSS'],
   ['tailwind','Tailwind'], ['swift','SwiftUI'], ['android','Android XML']
 ];
 function camel(k){ return k.replace(/-(\w)/g, function(m,c){ return c.toUpperCase(); }); }
@@ -12910,6 +13419,21 @@ function dsCss(t){
 }
 // Every non-colour token, flattened: { name (CSS custom property, no --), css, px, desc }.
 // Order follows the design system: type, space, radius, shadow, motion, icon, a11y, z.
+// "{font.size.caption}" -> the token it points at (DTCG alias).
+function dsRef(ref){
+  var o = DS;
+  String(ref).replace(/^\{|\}$/g, '').split('.').forEach(function(k){ o = o && o[k]; });
+  return o;
+}
+// A text style as its parts: px size, weight, unitless line height, px tracking.
+function dsTextStyle(name){
+  var v = DS.typography[name].$value;
+  var ls = typeof v.letterSpacing === 'string' ? dsRef(v.letterSpacing).$value.value : v.letterSpacing.value;
+  return { size:dsRef(v.fontSize).$value.value, weight:dsRef(v.fontWeight).$value,
+           lineHeight:dsRef(v.lineHeight).$value, tracking:ls,
+           css:'var(--fw-' + v.fontWeight.split('.').pop().replace('}', '') + ') var(--fs-' + v.fontSize.split('.').pop().replace('}', '') + ')/var(--lh-'
+             + v.lineHeight.split('.').pop().replace('}', '') + ') var(--font-' + v.fontFamily.split('.').pop().replace('}', '') + ')' };
+}
 function dsFlat(theme){
   var out = [];
   function add(group, prefix, fmt){
@@ -12920,9 +13444,12 @@ function dsFlat(theme){
                  raw:t.$value, type:t.$type, desc:t.$description || '' });
     });
   }
+  add(DS.font.family, 'font-', function(t){ return t.$value.map(function(f){ return /\s/.test(f) || f === 'Poppins' ? "'" + f + "'" : f; }).join(', '); });
   add(DS.font.size, 'fs-');
   add(DS.font.weight, 'fw-');
   add(DS.font.lineHeight, 'lh-');
+  add(DS.font.letterSpacing, 'ls-');
+  add(DS.typography, 'type-', function(t){ return dsTextStyle(Object.keys(DS.typography).filter(function(k){ return DS.typography[k] === t; })[0]).css; });
   var sp = {}; Object.keys(DS.space).forEach(function(k){ if (k !== 'gutter') sp[k] = DS.space[k]; });
   add(sp, 'space-');
   out.push({ group:'space-', name:'gutter', css:dsCss(DS.space.gutter), px:dsPx(DS.space.gutter),
@@ -12947,21 +13474,24 @@ function dsFlat(theme){
 function handoffCss(){
   var out = '/* GetSociable design tokens — generated from the prototype.\n'
           + '   Same names as the prototype CSS, so rules copy across unchanged. */\n\n'
-          + ':root {\n  --font-family: Poppins, system-ui, sans-serif;\n\n  /* Colour */\n';
+          + ':root {\n  /* Colour */\n';
   for (var k in TOKENS.light) out += '  --' + k + ': ' + TOKENS.light[k] + ';\n';
   var g = null;
   dsFlat('light').forEach(function(t){
     if (t.group !== g) { g = t.group; out += '\n'; }
     out += '  --' + t.name + ': ' + t.css + ';' + (t.desc ? '  /* ' + t.desc + ' */' : '') + '\n';
   });
-  out += '}\n\n[data-theme="dark"] {\n';
-  for (var d in TOKENS.dark) out += '  --' + d + ': ' + TOKENS.dark[d] + ';\n';
-  dsFlat('dark').forEach(function(t){ if (t.group === 'shadow-') out += '  --' + t.name + ': ' + t.css + ';\n'; });
+  var dark = '';
+  for (var d in TOKENS.dark) dark += '  --' + d + ': ' + TOKENS.dark[d] + ';\n';
+  dsFlat('dark').forEach(function(t){ if (t.group === 'shadow-') dark += '  --' + t.name + ': ' + t.css + ';\n'; });
+  out += '}\n\n/* Dark: follows the OS unless the app sets data-theme. */\n'
+       + '@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {\n'
+       + dark.replace(/^/gm, '  ').replace(/  $/, '') + '  }\n}\n\n[data-theme="dark"] {\n' + dark;
   return out + '}\n\n@media (prefers-reduced-motion: reduce) {\n'
     + '  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }\n}\n';
 }
 function handoffScss(){
-  var out = '// GetSociable design tokens — generated from the prototype\n\n$font-family: (Poppins, system-ui, sans-serif);\n\n';
+  var out = '// GetSociable design tokens — generated from the prototype\n\n';
   function map(name, entries){
     out += '$' + name + ': (\n' + entries.map(function(e){ return '  "' + e[0] + '": ' + e[1]; }).join(',\n') + '\n);\n\n';
   }
@@ -12969,7 +13499,7 @@ function handoffScss(){
   map('color-dark', Object.keys(TOKENS.dark).map(function(k){ return [k, TOKENS.dark[k]]; }));
   var groups = {}, order = [];
   dsFlat('light').forEach(function(t){
-    var gname = { 'fs-':'font-size', 'fw-':'font-weight', 'lh-':'line-height', 'space-':'space', 'radius-':'radius',
+    var gname = { 'font-':'font-family', 'ls-':'letter-spacing', 'type-':'text-style', 'fs-':'font-size', 'fw-':'font-weight', 'lh-':'line-height', 'space-':'space', 'radius-':'radius',
                   'shadow-':'shadow', 'dur-':'duration', 'ease-':'easing', 'icon-':'icon', '':'a11y', 'z-':'z', 'scrim':'scrim' }[t.group];
     if (!groups[gname]) { groups[gname] = []; order.push(gname); }
     groups[gname].push([t.group === 'scrim' ? t.name : (t.name.replace(t.group, '') || t.name), t.css]);
@@ -13008,10 +13538,15 @@ function handoffTailwind(){
   var lh = {}; flat.forEach(function(t){ if (t.group === 'lh-') lh[t.name] = t.css; });
   return '// tailwind.config.js — pair with the CSS export, which defines the var() values\n'
        + 'module.exports = {\n  darkMode: [\'selector\', \'[data-theme="dark"]\'],\n  theme: {\n'
-       + "    fontFamily: { sans: ['Poppins', 'system-ui', 'sans-serif'] },\n"
+       + "    fontFamily: { sans: ['var(--font-sans)'] },\n"
        + '    extend: {\n'
        + '      colors: {\n' + colors + '      },\n'
-       + block('fontSize', 'fs-', function(t){ return "['" + t.css + "', { lineHeight: '" + lh['lh-snug'] + "' }]"; })
+       + '      // Text styles: class text-{role} sets size, line height, weight and tracking together.\n'
+       + '      fontSize: {\n' + Object.keys(DS.typography).map(function(k){
+           var st = dsTextStyle(k);
+           return "        '" + k + "': ['" + st.size + "px', { lineHeight: '" + st.lineHeight + "', fontWeight: '" + st.weight + "'"
+             + (st.tracking ? ", letterSpacing: '" + st.tracking + "px'" : '') + ' }],\n';
+         }).join('') + '      },\n'
        + block('fontWeight', 'fw-', function(t){ return "'" + t.css + "'"; })
        + block('lineHeight', 'lh-', function(t){ return "'" + t.css + "'"; })
        + block('spacing', 'space-', function(t){ return "'" + t.css + "'"; })
@@ -13054,11 +13589,14 @@ function handoffSwift(){
   out += en('GSDuration', 'dur-', 'Double', function(t){ return num(t.raw.value / 1000); });
   out += 'enum GSA11y {\n  static let minTapTarget: CGFloat = ' + dsPx(DS.a11y['tap-min'])
        + '\n  static let minFontSize: CGFloat = ' + dsPx(DS.a11y['font-min']) + '\n}\n\n';
-  out += 'enum GSFont {\n';
-  TYPE_ROLES.forEach(function(t){
-    var w = t.weight >= 800 ? '.heavy' : t.weight >= 700 ? '.bold' : t.weight >= 600 ? '.semibold'
-          : t.weight >= 500 ? '.medium' : '.regular';
-    out += '  static let ' + camel(t.key) + ' = Font.custom("Poppins", size: ' + num(t.size) + ').weight(' + w + ')\n';
+  out += 'struct GSTextStyle {\n  let font: Font\n  let tracking: CGFloat\n  let lineHeight: CGFloat  // multiple of the size\n}\n\n';
+  out += 'enum GSText {\n';
+  Object.keys(DS.typography).forEach(function(k){
+    var st = dsTextStyle(k);
+    var w = st.weight >= 800 ? '.heavy' : st.weight >= 700 ? '.bold' : st.weight >= 600 ? '.semibold'
+          : st.weight >= 500 ? '.medium' : '.regular';
+    out += '  static let ' + camel(k) + ' = GSTextStyle(font: Font.custom("Poppins", size: ' + num(st.size) + ').weight(' + w + '), tracking: '
+         + num(st.tracking) + ', lineHeight: ' + num(st.lineHeight) + ')\n';
   });
   return out + '}\n';
 }
@@ -13085,6 +13623,17 @@ function handoffAndroid(){
              + v + sec[4] + '</' + sec[2] + '>\n';
       });
   });
+  out += '\n  <!-- Text styles: android:textAppearance="@style/GS.Text.Body" -->\n';
+  Object.keys(DS.typography).forEach(function(k){
+    var st = dsTextStyle(k);
+    out += '  <style name="GS.Text.' + k.split('-').map(function(w){ return w.charAt(0).toUpperCase() + w.slice(1); }).join('') + '">\n'
+         + '    <item name="android:fontFamily">@font/poppins</item>\n'
+         + '    <item name="android:textSize">' + st.size + 'sp</item>\n'
+         + '    <item name="android:textFontWeight">' + st.weight + '</item>\n'
+         + '    <item name="android:lineHeight">' + Math.round(st.size * st.lineHeight * 100) / 100 + 'sp</item>\n'
+         + '    <item name="android:letterSpacing">' + (Math.round(st.tracking / st.size * 1000) / 1000) + '</item>\n'
+         + '  </style>\n';
+  });
   out += '\n  <!-- Accessibility floors -->\n'
        + '  <dimen name="gs_tap_min">' + dsPx(DS.a11y['tap-min']) + 'dp</dimen>\n'
        + '  <dimen name="gs_text_min">' + dsPx(DS.a11y['font-min']) + 'sp</dimen>\n';
@@ -13096,17 +13645,24 @@ function handoffTokenCount(){
   return n;
 }
 function handoffCode(){
-  var f = UI.handoffFormat || 'json';
+  var f = UI.handoffFormat || 'design';
   return f === 'scss' ? handoffScss()
        : f === 'css' ? handoffCss()
        : f === 'tailwind' ? handoffTailwind()
        : f === 'swift' ? handoffSwift()
        : f === 'android' ? handoffAndroid()
+       : f === 'design' ? designMdText()
        : handoffJson();
 }
+// DESIGN.md as the repo has it: the same designMd() and inputs as tools/build-tokens.js.
+function designMdText(){
+  return designMd(document.getElementById('design-md-template').textContent.replace(/^\n/, ''), DS, {
+    components:JSON.parse(document.getElementById('design-md-components').textContent),
+    rules:PRODUCT_RULES, open:OPEN_DECISIONS, styleq:STYLE_DECISIONS });
+}
 function handoffFilename(){
-  var f = UI.handoffFormat || 'json';
-  return { css:'tokens.css', scss:'_tokens.scss', json:'tokens.json',
+  var f = UI.handoffFormat || 'design';
+  return { design:'DESIGN.md', css:'tokens.css', scss:'_tokens.scss', json:'tokens.json',
            tailwind:'tailwind.config.js', swift:'DesignTokens.swift',
            android:'design_tokens.xml' }[f] || 'tokens.txt';
 }
@@ -14844,7 +15400,7 @@ var OPEN_DECISIONS = [
   ['Alcohol marketing compliance', 'Brand pages and brand-tagged rows need legal review (age gating, responsible-drinking copy) before production.', 'Client legal']
 ];
 function libraryHandoffHtml(){
-  var fmt = UI.handoffFormat || 'json';
+  var fmt = UI.handoffFormat || 'design';
   var tabs = '';
   for (var i = 0; i < HANDOFF_FORMATS.length; i++) {
     tabs += '<button class="opt' + (fmt === HANDOFF_FORMATS[i][0] ? ' on' : '') + '" '
@@ -14868,16 +15424,19 @@ function libraryHandoffHtml(){
     + 'Change a colour in <b>Colour tokens</b> and this export changes with it &mdash; '
     + 'so what you copy is never a stale snapshot.</div>'
     + '<div class="ho-start"><b>Start here</b><ol>'
-    + '<li>Load the tokens (section 1) and Poppins ' + LOADED_WEIGHTS.join('/') + '. Never type a hex, size or radius in a component.</li>'
+    + '<li>Read <b>DESIGN.md</b> (section 1, first tab): the whole design system in one file \u2014 tokens, text styles, layout, components, do\u2019s and don\u2019ts, accessibility. It is the same file as <code>DESIGN.md</code> in the repo, in the open DESIGN.md format AI coding agents read.</li>'
+    + '<li>Load the tokens (W3C JSON, CSS, Tailwind, SwiftUI or Android) and Poppins ' + LOADED_WEIGHTS.join('/') + '. Never type a hex, size or radius in a component.</li>'
     + '<li>Read <b>Colour › What each colour means</b> and <b>Typography</b>: pick by role, not by look.</li>'
     + '<li>Build the <b>Listing row</b> first (Components): it is on almost every screen. Then the + sheet, tags and headers.</li>'
     + '<li>Build to the product rules (section 2). Anything in <b>Open decisions</b> is not settled: build what the prototype shows and flag it.</li>'
     + '<li>Open any screen with <code>?screen=&lt;id&gt;</code> or the <b>G</b> index to see it in context, light and dark.</li></ol></div>'
 
-    + '<div class="ho-sect"><h3>1 &middot; Design tokens <span class="ho-badge">' + handoffTokenCount() + ' tokens</span></h3>'
-    + '<div class="libsub">Colour (light + dark), category tints, type size / weight / line height, spacing, radius, '
+    + '<div class="ho-sect"><h3>1 &middot; Design system and tokens <span class="ho-badge">' + handoffTokenCount() + ' tokens</span></h3>'
+    + '<div class="libsub"><b>DESIGN.md</b> is the spec to build from (identical to the repo file). The other tabs are the tokens as code: '
+    + 'colour (light + dark), category tints, text styles, type size / weight / line height / letter-spacing, spacing, radius, '
     + 'shadow (light + dark), motion, icon sizes, accessibility floors and stacking order. '
-    + '<b>W3C tokens</b> is the canonical format and matches <code>design-system/tokens.json</code> exactly.</div>'
+    + '<b>W3C tokens</b> (DTCG 2025.10) is the canonical token format and matches <code>design-system/tokens.json</code> exactly. '
+    + 'All of them are generated from the prototype\u2019s CSS, so none can go stale.</div>'
     + '<div class="ho-tabs">' + tabs + '</div>'
     + '<div class="ho-codehead"><code>' + handoffFilename() + '</code>'
     + '<span class="ho-actions">'
